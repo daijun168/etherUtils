@@ -1,6 +1,8 @@
 package util
 
 import (
+	"crypto/ecdsa"
+	"crypto/elliptic"
 	"encoding/hex"
 	"math/big"
 	"reflect"
@@ -12,6 +14,22 @@ import (
 	"github.com/shopspring/decimal"
 	"golang.org/x/crypto/sha3"
 )
+
+// IsEthPrivateKey validate if ti's a valid privateKey
+func IsEthPrivateKey(hexString string) bool {
+	privateKeyBytes, err := hex.DecodeString(hexString)
+	if err != nil {
+		return false
+	}
+
+	curve := elliptic.P256()
+	privateKey := new(ecdsa.PrivateKey)
+	privateKey.D = new(big.Int).SetBytes(privateKeyBytes)
+	privateKey.PublicKey.Curve = curve
+	privateKey.PublicKey.X, privateKey.PublicKey.Y = curve.ScalarBaseMult(privateKeyBytes)
+
+	return privateKey != nil
+}
 
 // PublicKeyBytesToAddress ...
 func PublicKeyBytesToAddress(publicKey []byte) common.Address {

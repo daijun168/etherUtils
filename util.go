@@ -4,6 +4,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"encoding/hex"
+	"errors"
 	"math/big"
 	"reflect"
 	"regexp"
@@ -143,4 +144,41 @@ func SigRSV(isig interface{}) ([32]byte, [32]byte, uint8) {
 	V := uint8(vI + 27)
 
 	return R, S, V
+}
+
+// GetAddAndKey 从字符串中匹配私钥和地址
+func GetAddAndKey(line string) (address, key string, err error) {
+	re := regexp.MustCompile(`0x[0-9a-fA-F]+`)
+	// 以太坊地址正则表达式
+	//addressRegex := regexp.MustCompile("^0x[0-9a-fA-F]{40}$")
+	//// 以太坊私钥正则表达式
+	//privateKeyRegex := regexp.MustCompile("^[0-9a-fA-F]{64}|^0x[0-9a-fA-F]{64}")
+	// 测试地址验证
+	//if re.MatchString(line) {
+	//	//fmt.Println("地址格式正确", addressRegex.FindString(arr[0]))
+	//	address = re.FindString(line)
+	//} else {
+	//	fmt.Println("地址格式错误")
+	//	return "", "", errors.New("地址格式错误!!!")
+	//}
+	//if re.MatchString(line) {
+	//	//fmt.Println("私钥格式正确", privateKeyRegex.FindString(arr[1]))
+	//	key = re.FindString(line)
+	//} else {
+	//	fmt.Println("私钥格式错误")
+	//	return "", "", errors.New("私钥格式错误!!!")
+	//}
+
+	matches := re.FindAllString(line, -1)
+	for _, match := range matches {
+		if len(match) == 42 {
+			address = match
+		} else if len(match) == 66 || len(match) == 64 {
+			key = match
+		} else {
+			return "", "", errors.New("格式有误!!!")
+		}
+	}
+
+	return address, key, nil
 }

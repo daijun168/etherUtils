@@ -190,7 +190,7 @@ func FormatAddress(address string) string {
 		return address
 	}
 
-	head := address[:6]
+	head := address[:8]
 	tail := address[len(address)-5:]
 	formattedAddress := fmt.Sprintf("%s...%s", head, tail)
 

@@ -5,6 +5,7 @@ import (
 	"crypto/elliptic"
 	"encoding/hex"
 	"errors"
+	"fmt"
 	"math/big"
 	"reflect"
 	"regexp"
@@ -181,4 +182,17 @@ func GetAddAndKey(line string) (address, key string, err error) {
 	}
 
 	return address, key, nil
+}
+
+// FormatAddress 显示缩略地址
+func FormatAddress(address string) string {
+	if len(address) < 10 {
+		return address
+	}
+
+	head := address[:6]
+	tail := address[len(address)-5:]
+	formattedAddress := fmt.Sprintf("%s...%s", head, tail)
+
+	return formattedAddress
 }

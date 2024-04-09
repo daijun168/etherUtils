@@ -149,7 +149,8 @@ func SigRSV(isig interface{}) ([32]byte, [32]byte, uint8) {
 
 // GetAddAndKey 从字符串中匹配私钥和地址
 func GetAddAndKey(line string) (address, key string, err error) {
-	re := regexp.MustCompile(`0x[0-9a-fA-F]+`)
+	re := regexp.MustCompile(`(?:0x)?[0-9a-fA-F]+`)
+
 	// 以太坊地址正则表达式
 	//addressRegex := regexp.MustCompile("^0x[0-9a-fA-F]{40}$")
 	//// 以太坊私钥正则表达式

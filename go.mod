@@ -1,4 +1,4 @@
-module util
+module github.com/daijun168/etherUtils
 
 go 1.21
 

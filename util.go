@@ -185,6 +185,34 @@ func GetAddAndKey(line string) (address, key string, err error) {
 	return address, key, nil
 }
 
+// GetAddressFromStr 从字符串中匹配地址
+func GetAddressFromStr(line string) (address string, err error) {
+	//以太坊地址正则表达式
+	addressRegex := regexp.MustCompile("^0x[0-9a-fA-F]{40}$")
+	if addressRegex.MatchString(line) {
+		address = addressRegex.FindString(line)
+		return address, nil
+	} else {
+		return "", errors.New("地址格式错误!!!")
+	}
+}
+
+// GetPrivateKeyFromStr 从字符串中匹配地址
+func GetPrivateKeyFromStr(line string) (address string, err error) {
+
+	// 以太坊私钥正则表达式
+	privateKeyRegex := regexp.MustCompile(`(?:0x)?[0-9a-fA-F]{64,66}`)
+	// 测试地址验证
+	if privateKeyRegex.MatchString(line) {
+		//fmt.Println("私钥格式正确", privateKeyRegex.FindString(arr[1]))
+		privateKey := privateKeyRegex.FindString(line)
+		return privateKey, nil
+	} else {
+		return "", errors.New("私钥格式错误!!!")
+	}
+
+}
+
 // FormatAddress 显示缩略地址
 func FormatAddress(address string) string {
 	if len(address) < 10 {

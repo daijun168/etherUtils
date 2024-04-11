@@ -188,11 +188,20 @@ func GetAddAndKey(line string) (address, key string, err error) {
 // GetAddressFromStr 从字符串中匹配地址
 func GetAddressFromStr(line string) (address string, err error) {
 	//以太坊地址正则表达式
-	addressRegex := regexp.MustCompile("(0x[0-9a-fA-F]{40})(?:[^0-9a-fA-F]?)")
+	addressRegex := regexp.MustCompile("0x[0-9a-fA-F]+")
 
 	if addressRegex.MatchString(line) {
-		subMatch := addressRegex.FindAllStringSubmatch(line, -1)
-		address = subMatch[0][1]
+		subMatch := addressRegex.FindAllString(line, -1)
+		//fmt.Println(subMatch)
+		for _, match := range subMatch {
+			if len(match) == 42 {
+				address = match
+				break
+			}
+		}
+		if address == "" {
+			return "", errors.New("地址格式错误")
+		}
 		return address, nil
 	} else {
 		return "", errors.New("地址格式错误")

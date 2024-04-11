@@ -192,8 +192,6 @@ func GetAddressFromStr(line string) (address string, err error) {
 
 	if addressRegex.MatchString(line) {
 		subMatch := addressRegex.FindAllStringSubmatch(line, -1)
-		fmt.Println(subMatch)
-		fmt.Println(addressRegex.FindString(line), len(addressRegex.FindString(line)))
 		address = subMatch[0][1]
 		return address, nil
 	} else {
